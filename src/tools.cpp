@@ -12,6 +12,8 @@ Tools::~Tools() {}
 
 VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
                               const vector<VectorXd> &ground_truth) {
+    // Utility function which calculates Root Mean Squared Error
+    // between estimations and ground truths
     VectorXd rmse(4);
     rmse << 0, 0, 0, 0;
 
@@ -26,10 +28,10 @@ VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
         rmse += res;
     }
 
-    //calculate the mean
+    // calculate the mean
     rmse /= estimations.size();
 
-    //calculate the squared root
+    // calculate the squared root
     rmse = rmse.array().sqrt();
 
     return rmse;
@@ -38,6 +40,8 @@ VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
 }
 
 MatrixXd Tools::CalculateJacobian(const VectorXd &x_state) {
+    // This method calculated the Jacobian of the state vector
+
     // initialize Jacobian matrix
     MatrixXd Hj(3, 4);
     double px = x_state(0);

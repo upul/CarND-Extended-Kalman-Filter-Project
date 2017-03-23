@@ -44,6 +44,7 @@ FusionEKF::FusionEKF() {
     VectorXd x_ = VectorXd(4);
     x_ << 1, 1, 1, 1;
 
+    // initialize a standard Kalmal Filter class.
     ekf_.Init(x_, P_, F_, H_laser_, R_laser_, Q_);
 }
 
@@ -59,7 +60,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
      ****************************************************************************/
     if (!is_initialized_) {
         // first measurement
-        cout << "EKF: " << endl;
+        cout << "Extended Kalman Filter Algorithm: " << endl;
 
         double px = 0;
         double py = 0;
@@ -122,7 +123,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     /*****************************************************************************
      *  Update
      ****************************************************************************/
-
 
     if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
         // Radar updates

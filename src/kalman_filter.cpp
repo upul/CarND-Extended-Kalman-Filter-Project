@@ -18,6 +18,8 @@ void KalmanFilter::Init(VectorXd &x_in, MatrixXd &P_in, MatrixXd &F_in,
 }
 
 void KalmanFilter::Predict() {
+    // Prediction part of the Kalman Filter algorithm
+    // This is common for both standard and extended Kalman Filter algorithms
     x_ = F_ * x_;
     MatrixXd Ft = F_.transpose();
     P_ = F_ * P_ * Ft + Q_;
@@ -25,6 +27,7 @@ void KalmanFilter::Predict() {
 }
 
 void KalmanFilter::Update(const VectorXd &z) {
+    // Update step of the standard Kalman Filter algorithm
     VectorXd z_pred = H_ * x_;
     VectorXd y = z - z_pred;
     MatrixXd Ht = H_.transpose();
@@ -33,7 +36,7 @@ void KalmanFilter::Update(const VectorXd &z) {
     MatrixXd PHt = P_ * Ht;
     MatrixXd K = PHt * Si;
 
-    //new estimate
+    // new estimate
     x_ = x_ + (K * y);
     long x_size = x_.size();
     MatrixXd I = MatrixXd::Identity(x_size, x_size);
@@ -42,6 +45,7 @@ void KalmanFilter::Update(const VectorXd &z) {
 }
 
 void KalmanFilter::UpdateEKF(const VectorXd &z) {
+    // Update state of the extended Kalman Filter
     double px = x_[0];
     double py = x_[1];
     double vx = x_[2];
@@ -69,7 +73,7 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     MatrixXd PHt = P_ * Ht;
     MatrixXd K = PHt * Si;
 
-    //new estimate
+    // new estimate
     x_ = x_ + (K * y);
     long x_size = x_.size();
     MatrixXd I = MatrixXd::Identity(x_size, x_size);
