@@ -68,9 +68,11 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
         if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
             double rho = measurement_pack.raw_measurements_[0];
             double phi = measurement_pack.raw_measurements_[1];
+            double ro_dot = measurement_pack.raw_measurements_(2);
 
             px = rho * cos(phi);
             py = rho * sin(phi);
+            ekf_.x_ << px, py, ro_dot * cos(phi), ro_dot * sin(phi);
 
             // If initial values are zero they will set to an initial guess
             // and the uncertainty will be increased.
@@ -87,9 +89,9 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
         } else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
             px = measurement_pack.raw_measurements_[0];
             py = measurement_pack.raw_measurements_[1];
+            ekf_.x_ << px, py, 0, 0;
         }
 
-        ekf_.x_ << px, py, 0, 0;
         previous_timestamp_ = measurement_pack.timestamp_;
 
         is_initialized_ = true;
